@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Octógono de Esquisitice — Coleção</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root{
+  --fundo-base:#0a1c1b; --fundo-topo:#102a26;
+  --painel:rgba(174,210,196,.04); --painel2:rgba(174,210,196,.07);
+  --linha:rgba(148,179,164,.16);
+  --osso:#ece6d8; --musgo:#9ab6a7; --musgo-fraco:#5f7d70;
+  --ambar:#e0a458; --coral:#db5f46; --membrana:#f0a868;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #16352f 0%, transparent 55%),
+    linear-gradient(180deg, var(--fundo-topo) 0%, var(--fundo-base) 100%);
+  background-attachment:fixed;
+  color:var(--osso); min-height:100vh; line-height:1.5;
+  padding:28px 18px 64px;
+}
+.wrap{max-width:1080px;margin:0 auto}
+
+/* cabeçalho */
+.eyebrow{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--ambar);opacity:.85}
+h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(34px,8vw,56px);line-height:1.02;letter-spacing:-.015em;margin:.18em 0 .24em;color:var(--osso)}
+.sub{font-family:'Space Mono',monospace;font-size:12px;color:var(--musgo)}
+.sub b{color:var(--osso);font-weight:700}
+
+.banner{
+  display:none;margin:18px 0 0;padding:11px 15px;border:1px solid rgba(224,164,88,.3);
+  border-radius:11px;background:rgba(224,164,88,.07);
+  font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.6;color:var(--musgo);
+}
+.banner.show{display:block}
+.banner b{color:var(--ambar)}
+
+.rule{height:1px;background:var(--linha);margin:22px 0}
+
+/* barra de controles */
+.bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+.tabs{display:flex;gap:6px;background:var(--painel);border:1px solid var(--linha);border-radius:999px;padding:4px}
+.tab{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--musgo);background:transparent;border:none;border-radius:999px;padding:8px 16px;cursor:pointer;transition:.2s}
+.tab.active{background:var(--ambar);color:#1a1410;font-weight:700}
+.tab:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+.spacer{flex:1}
+.sortwrap{display:flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--musgo-fraco);text-transform:uppercase}
+select{
+  font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--osso);
+  background:var(--painel2);border:1px solid var(--linha);border-radius:9px;
+  padding:9px 30px 9px 12px;cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1 3l4 4 4-4' stroke='%239ab6a7' stroke-width='1.4' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 11px center;
+}
+select:focus-visible{outline:2px solid var(--ambar);outline-offset:1px}
+.count{font-family:'Space Mono',monospace;font-size:11px;color:var(--musgo-fraco);letter-spacing:.08em}
+
+/* galeria */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.card{
+  position:relative;text-align:left;cursor:pointer;
+  background:var(--painel);border:1px solid var(--linha);border-radius:18px;
+  padding:14px 14px 16px;transition:border-color .2s, transform .2s, background .2s;
+  display:flex;flex-direction:column;
+}
+.card:hover{border-color:rgba(224,164,88,.45);transform:translateY(-3px);background:var(--painel2)}
+.card:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+.card-jar{position:relative;width:100%;aspect-ratio:1;border-radius:13px;overflow:hidden;
+  background:radial-gradient(120% 70% at 50% 0%, rgba(174,210,196,.08) 0%, transparent 50%), rgba(0,0,0,.12);
+  border:1px solid rgba(174,210,196,.08)}
+.card-jar svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.avatar{position:absolute;top:9px;left:9px;z-index:2;width:30px;height:30px;border-radius:50%;
+  display:grid;place-items:center;font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;
+  color:var(--osso);background:rgba(10,28,27,.7);border:1px solid rgba(224,164,88,.4);backdrop-filter:blur(3px)}
+.card-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:12px}
+.cname{font-family:'Fraunces',serif;font-weight:600;font-size:17px;line-height:1.1;color:var(--osso)}
+.crole{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--musgo-fraco);margin-top:4px}
+.cindex{flex:none;text-align:right}
+.cindex .n{font-family:'Space Mono',monospace;font-weight:700;font-size:22px;color:var(--osso);line-height:1}
+.cindex .k{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ambar);margin-top:3px;opacity:.85}
+
+/* octógono comum */
+.grid-line{fill:none;stroke:var(--linha);stroke-width:1}
+.spoke{stroke:rgba(148,179,164,.12);stroke-width:1}
+.tick{font-family:'Space Mono',monospace;font-size:8.5px;fill:var(--musgo-fraco)}
+.axis-label{font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:500;fill:var(--musgo)}
+.axis-num{font-family:'Space Mono',monospace;font-size:9px;fill:var(--ambar);opacity:.9}
+.blob{stroke-linejoin:round}
+.vert{fill:var(--osso);stroke:var(--coral);stroke-width:1}
+
+/* comparar */
+#view-compare[hidden]{display:none}
+.hint{font-family:'Space Mono',monospace;font-size:12px;color:var(--musgo);margin-bottom:16px;letter-spacing:.03em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.chip{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--musgo);background:var(--painel);
+  border:1px solid var(--linha);border-radius:999px;padding:7px 14px 7px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:.18s}
+.chip:hover{border-color:rgba(224,164,88,.4);color:var(--osso)}
+.chip:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--musgo-fraco);flex:none}
+.chip.on{color:var(--osso);background:var(--painel2);border-color:transparent}
+.compare-stage{display:grid;grid-template-columns:1.3fr .9fr;gap:24px;align-items:center;margin-top:18px}
+.compare-octa{position:relative;width:100%;max-width:520px;margin:0 auto;aspect-ratio:560/480}
+.compare-octa svg{width:100%;height:100%;overflow:visible}
+.legend{display:flex;flex-direction:column;gap:13px}
+.leg{display:flex;align-items:center;gap:12px}
+.leg .sw{width:14px;height:14px;border-radius:4px;flex:none}
+.leg .ln{font-family:'Fraunces',serif;font-size:18px;color:var(--osso)}
+.leg .lr{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--musgo-fraco)}
+.leg .li{margin-left:auto;font-family:'Space Mono',monospace;font-weight:700;font-size:18px;color:var(--osso)}
+.empty-compare{font-family:'Fraunces',serif;font-style:italic;font-size:19px;color:var(--musgo-fraco);text-align:center;padding:50px 20px}
+
+/* modal */
+.backdrop{position:fixed;inset:0;z-index:50;background:rgba(5,14,13,.74);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s}
+.backdrop.show{opacity:1;pointer-events:auto}
+.modal{position:relative;width:100%;max-width:860px;max-height:92vh;overflow-y:auto;
+  background:linear-gradient(180deg,#10302b,#0b201d);border:1px solid rgba(174,210,196,.16);
+  border-radius:22px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:translateY(14px);transition:transform .22s}
+.backdrop.show .modal{transform:none}
+.modal-close{position:absolute;top:16px;right:16px;z-index:3;width:38px;height:38px;border-radius:50%;
+  background:var(--painel2);border:1px solid var(--linha);color:var(--osso);font-size:17px;cursor:pointer;transition:.2s}
+.modal-close:hover{border-color:var(--coral);color:var(--coral)}
+.modal-close:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+.modal-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:center}
+.modal-octa{position:relative;width:100%;aspect-ratio:560/480}
+.modal-octa svg{width:100%;height:100%;overflow:visible}
+.m-eyebrow{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ambar);opacity:.85}
+.modal h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,5vw,38px);line-height:1.04;margin:.14em 0 .3em;color:var(--osso)}
+.klass-big{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:22px;color:var(--ambar)}
+.index-big{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--musgo-fraco);margin-top:6px}
+.index-big b{font-size:30px;color:var(--osso);letter-spacing:-.01em}
+.index-big b small{font-size:.5em;color:var(--musgo-fraco)}
+.bars{margin-top:20px;display:flex;flex-direction:column;gap:11px}
+.barrow{display:grid;grid-template-columns:1fr auto;gap:6px 10px}
+.barlbl{font-size:13px;color:var(--musgo);align-self:center}
+.barval{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;color:var(--osso);align-self:center}
+.bartrack{grid-column:1/3;height:5px;border-radius:5px;background:rgba(148,179,164,.16);overflow:hidden}
+.barfill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--coral),var(--ambar))}
+.reading-box{margin-top:24px;border-top:1px solid var(--linha);padding-top:20px}
+.reading-box .tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ambar);opacity:.85}
+.reading-box p{font-family:'Fraunces',serif;font-size:clamp(17px,2.6vw,20px);line-height:1.46;color:var(--osso);margin-top:11px}
+.reading-box p em{font-style:italic;color:var(--ambar)}
+
+/* drop + toast */
+.dropzone{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;
+  background:rgba(8,22,20,.9);backdrop-filter:blur(6px)}
+.dropzone.show{display:flex}
+.dropzone .inner{border:2px dashed rgba(224,164,88,.5);border-radius:24px;padding:60px 70px;text-align:center}
+.dropzone .big{font-family:'Fraunces',serif;font-size:30px;color:var(--osso)}
+.dropzone .small{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--musgo);margin-top:10px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:90;
+  background:#13302b;border:1px solid rgba(224,164,88,.4);border-radius:12px;padding:13px 20px;
+  font-family:'Space Mono',monospace;font-size:12.5px;color:var(--osso);opacity:0;pointer-events:none;transition:.28s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{border-color:var(--coral)}
+
+footer{margin-top:42px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.7;letter-spacing:.04em;color:var(--musgo-fraco);text-align:center}
+
+@media (max-width:720px){
+  .modal-grid{grid-template-columns:1fr;gap:18px}
+  .compare-stage{grid-template-columns:1fr;gap:18px}
+}
+@media (prefers-reduced-motion: reduce){.mote{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Instituto de Aferição do Comportamento Anômalo</div>
+    <h1>Octógono de Esquisitice</h1>
+    <div class="sub">coleção de <b id="count-head">—</b> espécimes · aferição comparativa</div>
+    <div class="banner" id="banner"></div>
+  </header>
+
+  <div class="rule"></div>
+
+  <div class="bar">
+    <div class="tabs">
+      <button class="tab active" id="tab-gallery">Galeria</button>
+      <button class="tab" id="tab-compare">Comparar</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="sortwrap" id="sortwrap">
+      ordenar por
+      <select id="sort"></select>
+    </div>
+    <div class="count" id="count">—</div>
+  </div>
+
+  <section id="view-gallery">
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="view-compare" hidden>
+    <p class="hint">Selecione até 4 espécimes para sobrepor os perfis.</p>
+    <div class="chips" id="chips"></div>
+    <div id="compare-body"></div>
+  </section>
+
+  <footer>
+    aferição não-homologada · não constitui diagnóstico · classificação sujeita a revisão noturna
+  </footer>
+
+</div>
+
+<div class="backdrop" id="backdrop"><div class="modal" id="modal"></div></div>
+<div class="dropzone" id="dropzone"><div class="inner"><div class="big">solte seu arquivo .json</div><div class="small">os espécimes serão recarregados</div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   FALLBACK DE DEMONSTRAÇÃO
+   Usado só quando o app é aberto sem servidor (file://) e não
+   consegue ler data/people.json. A FONTE DE VERDADE é o arquivo
+   data/people.json — edite lá. Veja o README.
+   ============================================================ */
+const DEMO_PEOPLE = [
+  {id:1,name:"Maurício Menino",role:"Body Piercer",stats:{Excentricidade:100,Emotividade:20,Inconveniência:72,Dialética:30,Lucidez:90,Desleixo:70,Impulsividade:20,Desassossego:27}},
+  {id:2,name:"Matheus Maekawa",role:"Engenheiro Civil",stats:{Excentricidade:10,Emotividade:92,Inconveniência:100,Dialética:100,Lucidez:18,Desleixo:30,Impulsividade:65,Desassossego:90}},
+  {id:3,name:"Xúlia Souza",role:"Tatuadora",stats:{Excentricidade:100,Emotividade:100,Inconveniência:88,Dialética:75,Lucidez:22,Desleixo:10,Impulsividade:100,Desassossego:50}},
+  {id:4,name:"Gabe Tadeu",role:"Estudante",stats:{Excentricidade:79,Emotividade:20,Inconveniência:15,Dialética:10,Lucidez:10,Desleixo:100,Impulsividade:90,Desassossego:11}},
+  {id:5,name:"Felipe Araújo",role:"RH",stats:{Excentricidade:83,Emotividade:100,Inconveniência:77,Dialética:100,Lucidez:8,Desleixo:70,Impulsividade:90,Desassossego:20}},
+  {id:6,name:"Matheus Ruan",role:"Artista Circense",stats:{Excentricidade:91,Emotividade:43,Inconveniência:10,Dialética:10,Lucidez:68,Desleixo:10,Impulsividade:100,Desassossego:56}},
+  {id:7,name:"Victor Portes",role:"Programador",stats:{Excentricidade:90,Emotividade:30,Inconveniência:10,Dialética:60,Lucidez:75,Desleixo:10,Impulsividade:97,Desassossego:60}},
+  {id:8,name:"Pedro Dias",role:"Músico",stats:{Excentricidade:30,Emotividade:100,Inconveniência:80,Dialética:68,Lucidez:100,Desleixo:50,Impulsividade:80,Desassossego:90}},
+  {id:9,name:"Beliche",role:"Músico",stats:{Excentricidade:100,Emotividade:10,Inconveniência:10,Dialética:30,Lucidez:100,Desleixo:2,Impulsividade:50,Desassossego:69}},
+  {id:10,name:"Lucas Emanoel",role:"Mecânico",stats:{Excentricidade:83,Emotividade:100,Inconveniência:77,Dialética:100,Lucidez:8,Desleixo:70,Impulsividade:20,Desassossego:27}}
+];
+
+const SCALE = 100;
+const COMPARE_COLORS = ["#e0a458","#57c7d4","#d98cc0","#9bbf6a"];
+
+/* textos de leitura por eixo dominante (chave normalizada) */
+const DOM = {
+  excentricidade:"A norma parece uma sugestão que não lhe chegou. Anda por fora do mapa sem notar que havia mapa.",
+  emotividade:"Sente em alta voltagem — a temperatura interna muda mais rápido que a do ambiente.",
+  inconveniencia:"O entorno percebe sua presença antes de entender por quê. Conforto alheio costuma ser dano colateral.",
+  dialetica:"Toda afirmação vira convite ao contraditório. Concordar rápido demais lhe soa preguiça.",
+  lucidez:"Enxerga com uma clareza quase incômoda — vê o que a maioria prefere não ver.",
+  desleixo:"Mantém uma relação relaxada com a ordem: do corpo, do espaço, do mundo. Zelo é item opcional.",
+  impulsividade:"Entre o pensar e o fazer não há corredor — a ideia sai pela porta antes de você.",
+  desassossego:"Um motor que não desliga. O repouso parece um lugar que existe só para os outros."
+};
+const KLASS = [
+  [0, "Domesticado","Mal se distingue de uma pessoa comum — o que, convenhamos, já é levemente suspeito."],
+  [25,"Levemente Torto","Passa despercebido num grupo grande, mas a torção aparece sempre na hora errada."],
+  [45,"Esquisito de Catálogo","Esquisitice plenamente formada, dentro dos parâmetros já conhecidos."],
+  [65,"Anomalia Confirmada","Os instrumentos registram desvio consistente. Caso documentado."],
+  [80,"Fora de Catálogo","Nenhuma categoria existente acomoda este espécime por inteiro."]
+];
+
+/* ---------- utilidades ---------- */
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+const cap  = s => s.charAt(0).toUpperCase()+s.slice(1);
+const esc  = s => String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function initials(name){
+  const parts=String(name).trim().split(/\s+/);
+  if(parts.length===1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
+}
+/* parser tolerante: aceita vírgula sobrando e BOM */
+function parsePeople(text){
+  let t=text.replace(/^\uFEFF/,'').replace(/,(\s*[}\]])/g,'$1');
+  const data=JSON.parse(t);
+  if(!Array.isArray(data)) throw new Error('o JSON precisa ser uma lista [ ... ]');
+  return data;
+}
+
+let AXES=[];           // [{label, key}]
+let PEOPLE=[];         // normalizados
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function buildModel(raw){
+  if(!raw.length) throw new Error('lista vazia');
+  // eixos canônicos = chaves de stats do primeiro registro, na ordem
+  const first = raw.find(p=>p.stats && Object.keys(p.stats).length) || raw[0];
+  AXES = Object.keys(first.stats||{}).map(k=>({label:cap(k), key:norm(k)}));
+  PEOPLE = raw.map((p,i)=>{
+    const byNorm={};
+    Object.entries(p.stats||{}).forEach(([k,v])=>{ byNorm[norm(k)] = Number(v)||0; });
+    const values = AXES.map(a=> byNorm[a.key] ?? 0);
+    const sum = values.reduce((a,b)=>a+b,0);
+    const avg = sum/Math.max(values.length,1);
+    const order = values.map((v,idx)=>[v,idx]).sort((a,b)=>b[0]-a[0]||a[1]-b[1]);
+    return {
+      id: p.id ?? ('p'+i), name: p.name||('Espécime '+(i+1)), role: p.role||'',
+      values, avg, sum,
+      domIdx: order[0][1], secIdx: order[1] ? order[1][1] : order[0][1],
+      secVal: order[1] ? order[1][0] : 0
+    };
+  });
+}
+function klassFor(avg){ let k=KLASS[0]; for(const r of KLASS){ if(avg>=r[0]) k=r; } return k; }
+function readingText(p){
+  if(p.sum===0) return "Nenhum traço registrado. <em>Suspeitamente</em> normal — o instituto recomenda nova aferição.";
+  const k=klassFor(p.avg);
+  let txt = k[2]+" "+(DOM[AXES[p.domIdx].key] || "Perfil de difícil enquadramento.");
+  if(p.secVal>=40 && p.secIdx!==p.domIdx) txt+=` Por baixo, ainda pulsa um traço de <em>${esc(AXES[p.secIdx].label.toLowerCase())}</em>.`;
+  return txt;
+}
+
+/* ---------- octógono ---------- */
+const REG=[]; // {scope, pathEl, vertEls, geom, vals, amp, scaleMax}
+function clearScope(s){ for(let i=REG.length-1;i>=0;i--) if(REG[i].scope===s) REG.splice(i,1); }
+function geomFor(n,cx,cy,R){
+  const ang=[]; for(let i=0;i<n;i++) ang.push((-90+i*360/n)*Math.PI/180);
+  return {n,cx,cy,R,ang};
+}
+function ptAt(g,i,val,scaleMax,breath,amp){
+  const a=g.ang[i], base=g.R*0.05;
+  const r=base+(val/scaleMax)*(g.R-base);
+  const rb=r*(1+amp*Math.sin(breath*0.0013+i*0.7));
+  return [g.cx+rb*Math.cos(a), g.cy+rb*Math.sin(a)];
+}
+function blobPath(g,vals,scaleMax,breath,amp){
+  const n=g.n, p=vals.map((v,i)=>ptAt(g,i,v,scaleMax,breath,amp));
+  let d=`M ${p[0][0].toFixed(2)} ${p[0][1].toFixed(2)} `;
+  for(let i=0;i<n;i++){
+    const p0=p[(i-1+n)%n],p1=p[i],p2=p[(i+1)%n],p3=p[(i+2)%n];
+    const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6;
+    const c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+=`C ${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2[0].toFixed(2)} ${p2[1].toFixed(2)} `;
+  }
+  return d+"Z";
+}
+function drawEntry(e,now){
+  if(!e.pathEl.isConnected || e.pathEl.getClientRects().length===0) return;
+  const b=reduce?0:now;
+  e.pathEl.setAttribute('d', blobPath(e.geom,e.vals,e.scaleMax,b,reduce?0:e.amp));
+  if(e.vertEls) e.vertEls.forEach((c,i)=>{ const[x,y]=ptAt(e.geom,i,e.vals[i],e.scaleMax,b,reduce?0:e.amp); c.setAttribute('cx',x.toFixed(2));c.setAttribute('cy',y.toFixed(2)); });
+}
+let uid=0;
+/* blobs: [{vals, stroke, fill, glow, verts(bool)}] ; opts:{labels,viewBox,cx,cy,R,rlabel,rings,amp,scope} */
+function makeOctagon(mount, blobs, opts){
+  const o=Object.assign({labels:false,viewBox:"0 0 240 240",cx:120,cy:120,R:94,rlabel:120,rings:[0.5,1],amp:0.018,scope:'gallery'},opts);
+  const g=geomFor(AXES.length,o.cx,o.cy,o.R);
+  const NSP=p=>p.toFixed(1);
+  let defs='', inner='';
+  // grade
+  o.rings.forEach(f=>{
+    const pts=[]; for(let i=0;i<g.n;i++){const a=g.ang[i];pts.push(`${NSP(g.cx+g.R*f*Math.cos(a))},${NSP(g.cy+g.R*f*Math.sin(a))}`);}
+    inner+=`<polygon class="grid-line" points="${pts.join(' ')}"/>`;
+  });
+  if(o.labels){
+    [0.5,1].forEach(f=>{ inner+=`<text class="tick" x="${g.cx+4}" y="${NSP(g.cy-g.R*f+3)}">${Math.round(f*SCALE)}</text>`; });
+    for(let i=0;i<g.n;i++){
+      const a=g.ang[i], ox=g.cx+g.R*Math.cos(a), oy=g.cy+g.R*Math.sin(a);
+      inner+=`<line class="spoke" x1="${g.cx}" y1="${g.cy}" x2="${NSP(ox)}" y2="${NSP(oy)}"/>`;
+      const lx=g.cx+o.rlabel*Math.cos(a), ly=g.cy+o.rlabel*Math.sin(a);
+      let anc='middle'; if(Math.cos(a)>0.3)anc='start'; else if(Math.cos(a)<-0.3)anc='end';
+      let dy=4; if(Math.sin(a)<-0.5)dy=-2; else if(Math.sin(a)>0.5)dy=12;
+      inner+=`<text class="axis-num" x="${NSP(lx)}" y="${NSP(ly+dy-13)}" text-anchor="${anc}">0${i+1}</text>`;
+      inner+=`<text class="axis-label" x="${NSP(lx)}" y="${NSP(ly+dy)}" text-anchor="${anc}">${esc(AXES[i].label)}</text>`;
+    }
+  } else {
+    for(let i=0;i<g.n;i++){const a=g.ang[i];inner+=`<line class="spoke" x1="${g.cx}" y1="${g.cy}" x2="${NSP(g.cx+g.R*Math.cos(a))}" y2="${NSP(g.cy+g.R*Math.sin(a))}"/>`;}
+  }
+  // paths
+  const pathIds=[], vertGroups=[];
+  blobs.forEach(b=>{
+    const id='b'+(uid++);
+    let fill=b.fill;
+    if(b.fill==='grad'){
+      const gid='g'+id;
+      defs+=`<radialGradient id="${gid}" cx="50%" cy="46%" r="62%">
+        <stop offset="0%" stop-color="#f6c084" stop-opacity="0.92"/>
+        <stop offset="55%" stop-color="#e07a45" stop-opacity="0.82"/>
+        <stop offset="100%" stop-color="#c2422f" stop-opacity="0.74"/></radialGradient>`;
+      fill=`url(#${gid})`;
+    }
+    const glow = b.glow ? `filter:drop-shadow(0 0 13px ${b.glow});` : '';
+    inner+=`<path class="blob" id="${id}" d="" fill="${fill}" stroke="${b.stroke}" stroke-width="${b.sw||1.6}" style="${glow}"/>`;
+    pathIds.push(id);
+    if(b.verts){ let vg=''; for(let i=0;i<g.n;i++) vg+=`<circle class="vert" id="${id}v${i}" r="2.6"/>`; inner+=vg; vertGroups.push(id); }
+    else vertGroups.push(null);
+  });
+  mount.innerHTML=`<svg viewBox="${o.viewBox}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>${defs}</defs>${inner}</svg>`;
+  blobs.forEach((b,bi)=>{
+    const pathEl=mount.querySelector('#'+pathIds[bi]);
+    let vertEls=null;
+    if(vertGroups[bi]){ vertEls=[]; for(let i=0;i<g.n;i++) vertEls.push(mount.querySelector('#'+vertGroups[bi]+'v'+i)); }
+    const entry={scope:o.scope,pathEl,vertEls,geom:g,vals:b.vals,amp:o.amp,scaleMax:SCALE};
+    REG.push(entry); drawEntry(entry, performance.now());
+  });
+}
+
+/* loop de respiração */
+function loop(now){ for(const e of REG) drawEntry(e,now); requestAnimationFrame(loop); }
+
+/* ---------- galeria ---------- */
+let sortKey='__index';
+function sortedPeople(){
+  const arr=PEOPLE.slice();
+  if(sortKey==='__name') arr.sort((a,b)=>a.name.localeCompare(b.name,'pt'));
+  else if(sortKey==='__index') arr.sort((a,b)=>b.avg-a.avg);
+  else { const ai=AXES.findIndex(a=>a.key===sortKey); arr.sort((a,b)=>b.values[ai]-a.values[ai]); }
+  return arr;
+}
+function renderGallery(){
+  clearScope('gallery');
+  const grid=document.getElementById('grid');
+  const arr=sortedPeople();
+  grid.innerHTML=arr.map(p=>{
+    const k=klassFor(p.avg);
+    return `<button class="card" data-id="${esc(String(p.id))}">
+      <div class="card-jar"><span class="avatar">${esc(initials(p.name))}</span><div class="oct"></div></div>
+      <div class="card-meta">
+        <div><div class="cname">${esc(p.name)}</div><div class="crole">${esc(p.role||'—')}</div></div>
+        <div class="cindex"><div class="n">${Math.round(p.avg)}</div><div class="k">${esc(k[1].split(' ')[0])}</div></div>
+      </div></button>`;
+  }).join('');
+  const cards=grid.querySelectorAll('.card');
+  cards.forEach((card,i)=>{
+    const p=arr[i];
+    makeOctagon(card.querySelector('.oct'), [{vals:p.values, fill:'grad', stroke:'#f0a868', glow:'rgba(219,95,70,.45)', sw:1.5, verts:false}],
+      {scope:'gallery', viewBox:"0 0 240 240", cx:120, cy:120, R:94, rings:[0.5,1], amp:0.014});
+    card.addEventListener('click',()=>openDetail(p.id));
+  });
+}
+
+/* ---------- detalhe ---------- */
+function openDetail(id){
+  const p=PEOPLE.find(x=>String(x.id)===String(id)); if(!p)return;
+  const k=klassFor(p.avg);
+  const bars=AXES.map((a,i)=>`<div class="barrow">
+     <div class="barlbl">${esc(a.label)}</div><div class="barval">${Math.round(p.values[i])}</div>
+     <div class="bartrack"><div class="barfill" style="width:${(p.values[i]/SCALE*100).toFixed(1)}%"></div></div>
+   </div>`).join('');
+  document.getElementById('modal').innerHTML=`
+    <button class="modal-close" id="mclose" aria-label="Fechar">✕</button>
+    <div class="modal-grid">
+      <div class="modal-octa"><div class="oct"></div></div>
+      <div class="modal-info">
+        <div class="m-eyebrow">${esc(p.role||'espécime')} · nº ${esc(String(p.id))}</div>
+        <h2>${esc(p.name)}</h2>
+        <div class="klass-big">${esc(k[1])}</div>
+        <div class="index-big"><b>${Math.round(p.avg)}<small>/100</small></b> &nbsp;índice geral</div>
+        <div class="bars">${bars}</div>
+      </div>
+    </div>
+    <div class="reading-box"><div class="tag">leitura do espécime</div><p>${readingText(p)}</p></div>`;
+  clearScope('detail');
+  makeOctagon(document.querySelector('#modal .oct'),
+    [{vals:p.values, fill:'grad', stroke:'#f0a868', glow:'rgba(219,95,70,.5)', sw:1.6, verts:true}],
+    {scope:'detail', labels:true, viewBox:"0 0 560 480", cx:280, cy:244, R:150, rlabel:184, rings:[0.25,0.5,0.75,1], amp:0.03});
+  document.getElementById('mclose').addEventListener('click',closeDetail);
+  document.getElementById('backdrop').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeDetail(){ document.getElementById('backdrop').classList.remove('show'); document.body.style.overflow=''; clearScope('detail'); }
+document.getElementById('backdrop').addEventListener('click',e=>{ if(e.target.id==='backdrop') closeDetail(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
+
+/* ---------- comparar ---------- */
+let selected=[]; // ids
+function renderChips(){
+  const box=document.getElementById('chips');
+  box.innerHTML=PEOPLE.map(p=>{
+    const pos=selected.indexOf(p.id);
+    const color = pos>=0 ? COMPARE_COLORS[pos] : '';
+    const style = pos>=0 ? `style="border-color:${color}"` : '';
+    const dot = pos>=0 ? `background:${color}` : '';
+    return `<button class="chip ${pos>=0?'on':''}" data-id="${esc(String(p.id))}" ${style}>
+      <span class="dot" style="${dot}"></span>${esc(p.name)}</button>`;
+  }).join('');
+  box.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{
+    const id=PEOPLE.find(p=>String(p.id)===ch.dataset.id).id;
+    const pos=selected.indexOf(id);
+    if(pos>=0) selected.splice(pos,1);
+    else { if(selected.length>=4){ toast('Máximo de 4 espécimes por comparação','err'); return; } selected.push(id); }
+    renderChips(); renderCompare();
+  }));
+}
+function renderCompare(){
+  clearScope('compare');
+  const body=document.getElementById('compare-body');
+  if(!selected.length){ body.innerHTML=`<div class="empty-compare">Escolha alguns espécimes acima para ver as formas sobrepostas.</div>`; return; }
+  const chosen=selected.map(id=>PEOPLE.find(p=>p.id===id));
+  const legend=chosen.map((p,i)=>{
+    const k=klassFor(p.avg);
+    return `<div class="leg"><span class="sw" style="background:${COMPARE_COLORS[i]}"></span>
+      <div><div class="ln">${esc(p.name)}</div><div class="lr">${esc(p.role||'—')} · ${esc(k[1])}</div></div>
+      <div class="li">${Math.round(p.avg)}</div></div>`;
+  }).join('');
+  body.innerHTML=`<div class="compare-stage"><div class="compare-octa"><div class="oct"></div></div><div class="legend">${legend}</div></div>`;
+  const blobs=chosen.map((p,i)=>({vals:p.values, fill:hexA(COMPARE_COLORS[i],0.13), stroke:COMPARE_COLORS[i], glow:hexA(COMPARE_COLORS[i],0.33), sw:1.8, verts:false}));
+  makeOctagon(document.querySelector('#compare-body .oct'), blobs,
+    {scope:'compare', labels:true, viewBox:"0 0 560 480", cx:280, cy:244, R:150, rlabel:184, rings:[0.25,0.5,0.75,1], amp:0.022});
+}
+function hexA(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; }
+
+/* ---------- abas ---------- */
+function setTab(which){
+  const g=which==='gallery';
+  document.getElementById('tab-gallery').classList.toggle('active',g);
+  document.getElementById('tab-compare').classList.toggle('active',!g);
+  document.getElementById('view-gallery').hidden=!g;
+  document.getElementById('view-compare').hidden=g;
+  document.getElementById('sortwrap').style.display=g?'':'none';
+  if(!g) renderCompare();
+}
+document.getElementById('tab-gallery').addEventListener('click',()=>setTab('gallery'));
+document.getElementById('tab-compare').addEventListener('click',()=>setTab('compare'));
+
+/* ---------- controles ---------- */
+function buildSort(){
+  const sel=document.getElementById('sort');
+  let html=`<option value="__index">índice geral</option>`;
+  AXES.forEach(a=>html+=`<option value="${a.key}">${esc(a.label)}</option>`);
+  html+=`<option value="__name">nome</option>`;
+  sel.innerHTML=html; sel.value=sortKey;
+  sel.onchange=()=>{ sortKey=sel.value; renderGallery(); };
+}
+function updateCounts(){
+  document.getElementById('count').textContent=PEOPLE.length+' espécimes';
+  document.getElementById('count-head').textContent=PEOPLE.length;
+}
+
+/* ---------- toast / drop ---------- */
+let toastT;
+function toast(msg,kind){ const t=document.getElementById('toast'); t.textContent=msg; t.className='toast show'+(kind==='err'?' err':''); clearTimeout(toastT); toastT=setTimeout(()=>t.className='toast',2600); }
+const dz=document.getElementById('dropzone'); let dragDepth=0;
+window.addEventListener('dragenter',e=>{ if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files')){ e.preventDefault(); dragDepth++; dz.classList.add('show'); }});
+window.addEventListener('dragover',e=>{ if(dz.classList.contains('show')) e.preventDefault(); });
+window.addEventListener('dragleave',e=>{ dragDepth=Math.max(0,dragDepth-1); if(!dragDepth) dz.classList.remove('show'); });
+window.addEventListener('drop',e=>{
+  if(!e.dataTransfer||!e.dataTransfer.files.length) return;
+  e.preventDefault(); dragDepth=0; dz.classList.remove('show');
+  const f=e.dataTransfer.files[0];
+  const r=new FileReader();
+  r.onload=()=>{ try{ const raw=parsePeople(r.result); buildModel(raw); afterLoad(); toast(PEOPLE.length+' espécimes carregados de '+f.name); }catch(err){ toast('Erro no JSON: '+err.message,'err'); } };
+  r.readAsText(f);
+});
+
+/* ---------- carregamento ---------- */
+async function fetchText(url){ const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error('http'); return r.text(); }
+async function loadFromRepo(){
+  // tenta manifesto data/sources.json -> vários arquivos; senão data/people.json
+  let files=['people.json'];
+  try{ files=parsePeople(await fetchText('data/sources.json')); if(!Array.isArray(files)||!files.length) files=['people.json']; }catch(e){}
+  const all=[]; const seen=new Map();
+  for(const name of files){
+    try{ const arr=parsePeople(await fetchText('data/'+name)); arr.forEach(p=>{ const key=p.id ?? p.name; seen.set(key,p); }); }catch(e){}
+  }
+  seen.forEach(v=>all.push(v));
+  if(!all.length) throw new Error('sem dados no repositório');
+  return all;
+}
+function afterLoad(){ buildSort(); updateCounts(); renderGallery(); renderChips(); if(!document.getElementById('view-compare').hidden) renderCompare(); }
+
+(async function init(){
+  try{
+    const raw=await loadFromRepo();
+    buildModel(raw); afterLoad();
+    document.getElementById('banner').classList.remove('show');
+  }catch(e){
+    buildModel(DEMO_PEOPLE); afterLoad();
+    const b=document.getElementById('banner');
+    b.innerHTML='Exibindo <b>dados de demonstração</b>. Publique no GitHub Pages (ou rode um servidor local) para carregar <b>data/people.json</b> — ou arraste seu .json para cá.';
+    b.classList.add('show');
+  }
+  if(!reduce) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

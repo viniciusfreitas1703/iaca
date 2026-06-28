@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "Maurício Menino",
+    "role": "Body Piercer",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 100,
+      "Emotividade": 20,
+      "Inconveniência": 72,
+      "Dialética": 30,
+      "Lucidez": 90,
+      "Desleixo": 70,
+      "Impulsividade": 20,
+      "Desassossego": 27
+    }
+  },
+  {
+    "id": 2,
+    "name": "Matheus Maekawa",
+    "role": "Engenheiro Civil",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 10,
+      "Emotividade": 92,
+      "Inconveniência": 100,
+      "Dialética": 100,
+      "Lucidez": 18,
+      "Desleixo": 30,
+      "Impulsividade": 65,
+      "Desassossego": 90
+    }
+  },
+  {
+    "id": 3,
+    "name": "Xúlia Souza",
+    "role": "Tatuadora",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 100,
+      "Emotividade": 100,
+      "Inconveniência": 88,
+      "Dialética": 75,
+      "Lucidez": 22,
+      "Desleixo": 10,
+      "Impulsividade": 100,
+      "Desassossego": 50
+    }
+  },
+  {
+    "id": 4,
+    "name": "Gabe Tadeu",
+    "role": "Estudante",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 79,
+      "Emotividade": 20,
+      "Inconveniência": 15,
+      "Dialética": 10,
+      "Lucidez": 10,
+      "Desleixo": 100,
+      "Impulsividade": 90,
+      "Desassossego": 11
+    }
+  },
+  {
+    "id": 5,
+    "name": "Felipe Araújo",
+    "role": "RH",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 83,
+      "Emotividade": 100,
+      "Inconveniência": 77,
+      "Dialética": 100,
+      "Lucidez": 8,
+      "Desleixo": 70,
+      "Impulsividade": 90,
+      "Desassossego": 20
+    }
+  },
+  {
+    "id": 6,
+    "name": "Matheus Ruan",
+    "role": "Artista Circense",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 91,
+      "Emotividade": 43,
+      "Inconveniência": 10,
+      "Dialética": 10,
+      "Lucidez": 68,
+      "Desleixo": 10,
+      "Impulsividade": 100,
+      "Desassossego": 56
+    }
+  },
+  {
+    "id": 7,
+    "name": "Victor Portes",
+    "role": "Programador",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 90,
+      "Emotividade": 30,
+      "Inconveniência": 10,
+      "Dialética": 60,
+      "Lucidez": 75,
+      "Desleixo": 10,
+      "Impulsividade": 97,
+      "Desassossego": 60
+    }
+  },
+  {
+    "id": 8,
+    "name": "Pedro Dias",
+    "role": "Músico",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 30,
+      "Emotividade": 100,
+      "Inconveniência": 80,
+      "Dialética": 68,
+      "Lucidez": 100,
+      "Desleixo": 50,
+      "Impulsividade": 80,
+      "Desassossego": 90
+    }
+  },
+  {
+    "id": 9,
+    "name": "Beliche",
+    "role": "Músico",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 100,
+      "Emotividade": 10,
+      "Inconveniência": 10,
+      "Dialética": 30,
+      "Lucidez": 100,
+      "Desleixo": 2,
+      "Impulsividade": 50,
+      "Desassossego": 69
+    }
+  },
+  {
+    "id": 10,
+    "name": "Lucas Emanoel",
+    "role": "Mecânico",
+    "color": "#00C9FF",
+    "stats": {
+      "Excentricidade": 83,
+      "Emotividade": 100,
+      "Inconveniência": 77,
+      "Dialética": 100,
+      "Lucidez": 8,
+      "Desleixo": 70,
+      "Impulsividade": 20,
+      "Desassossego": 27
+    }
+  }
+]
